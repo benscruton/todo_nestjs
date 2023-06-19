@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import {Todo} from "./interfaces";
 
 
@@ -26,10 +26,13 @@ export class TodosService {
     return this.todos;
   };
 
-  findOne(todoId: string): Todo | null{
+  findOne(todoId: string): Todo{
     const selectedItem: Todo = this.todos.filter(todo =>
       todo.id === todoId
     )[0];
-    return selectedItem || null;
+    if(!selectedItem){
+      throw new HttpException("Not Found", 404);
+    }
+    return selectedItem;
   }
 };
