@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import {Todo} from "./interfaces";
-import { CreateTodoDTO } from './classes';
 
 
 @Injectable()
