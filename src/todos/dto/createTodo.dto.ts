@@ -1,5 +1,5 @@
 export class CreateTodoDTO{
-  id: string;
+  todoId: number;
   text: string;
   isCompleted: boolean;
 };

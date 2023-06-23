@@ -1,5 +1,5 @@
-import { Body, Controller, Get, HttpCode, Param, Post } from '@nestjs/common';
-import { Todo } from './interfaces';
+import { Body, Controller, Get, HttpCode, Param, ParseIntPipe, Post, Put } from '@nestjs/common';
+import { Todo } from './entities';
 import { TodosService } from './todos.service';
 import { CreateTodoDTO } from './dto';
 
@@ -19,18 +19,22 @@ export class TodosController {
   }
 
   @Post()
-  createTodo(@Body() createTodoDto: CreateTodoDTO): Todo{
+  createTodo(@Body() createTodoDto: CreateTodoDTO): Promise<Todo>{
     return this.todosService.create(createTodoDto);
   }
 
   @Get()
-  allTodos(): Todo[]{
+  allTodos(): Promise<Todo[]>{
     return this.todosService.findAll();
   }
 
   @Get(":todoId")
-  todoById(@Param() params: any): Todo | null{
-    return this.todosService.findOne(params.todoId);
+  todoById(@Param("todoId", ParseIntPipe) todoId: number): Promise<Todo | null>{
+    return this.todosService.findById(todoId);
   }
   
+  @Put(":todoId")
+  updateTodoById(@Param("todoId", ParseIntPipe) todoId: number, @Body() updateTodoDto: CreateTodoDTO): Promise<Todo | null>{
+    return this.todosService.updateById(todoId, updateTodoDto);
+  }
 };
